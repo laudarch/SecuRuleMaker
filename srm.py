@@ -19,31 +19,26 @@ def generate_rules(cidr_list, action, firewall_type):
                 rules.append(f'iptables -A INPUT -s {cidr} -j DROP')
             else:
                 raise ValueError("Action must be 'allow' or 'block'")
- 
         elif firewall_type == 'ipfw':
             if action == 'allow':
                 rules.append(f'ipfw add allow ip from {cidr} to any')
             elif action == 'block':
                 rules.append(f'ipfw add deny ip from {cidr} to any')
- 
         elif firewall_type == 'ipchains':
             if action == 'allow':
                 rules.append(f'ipchains -A input -s {cidr} -j ACCEPT')
             elif action == 'block':
                 rules.append(f'ipchains -A input -s {cidr} -j DENY')
- 
         elif firewall_type == 'pf':
             if action == 'allow':
                 rules.append(f'pass in from {cidr}')
             elif action == 'block':
                 rules.append(f'block in from {cidr}')
- 
         elif firewall_type == 'ACL':
             if action == 'allow':
                 rules.append(f'permit {cidr} any')
             elif action == 'block':
                 rules.append(f'deny {cidr} any')
-
         else:
             raise ValueError("Unsupported firewall type. Use 'iptables', 'ipfw', 'ipchains', 'pf', or 'ACL'.")
  
