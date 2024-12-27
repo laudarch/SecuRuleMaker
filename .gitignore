@@ -1,0 +1,45 @@
+# Python cache files
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+venv/
+env/
+ENV/
+.venv/
+.env/
+
+# Distribution / packaging
+.Python
+build/
+dist/
+*.egg-info/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# IDE and editor files
+*.swp
+*.swo
+*.sublime-workspace
+*.sublime-project
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Configuration files
+*.env
+*.conf
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Other files
+*.bak
+*.tmp
+
+# Ignore the zones folder
+zones/
