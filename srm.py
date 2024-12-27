@@ -6,6 +6,9 @@
 import argparse
 import sys
 
+"""
+Generate rules function
+"""
 def generate_rules(cidr_list, action, firewall_type):
     rules = []
     for cidr in cidr_list:
@@ -16,36 +19,39 @@ def generate_rules(cidr_list, action, firewall_type):
                 rules.append(f'iptables -A INPUT -s {cidr} -j DROP')
             else:
                 raise ValueError("Action must be 'allow' or 'block'")
-        
+ 
         elif firewall_type == 'ipfw':
             if action == 'allow':
                 rules.append(f'ipfw add allow ip from {cidr} to any')
             elif action == 'block':
                 rules.append(f'ipfw add deny ip from {cidr} to any')
-        
+ 
         elif firewall_type == 'ipchains':
             if action == 'allow':
                 rules.append(f'ipchains -A input -s {cidr} -j ACCEPT')
             elif action == 'block':
                 rules.append(f'ipchains -A input -s {cidr} -j DENY')
-        
+ 
         elif firewall_type == 'pf':
             if action == 'allow':
                 rules.append(f'pass in from {cidr}')
             elif action == 'block':
                 rules.append(f'block in from {cidr}')
-        
+ 
         elif firewall_type == 'ACL':
             if action == 'allow':
                 rules.append(f'permit {cidr} any')
             elif action == 'block':
                 rules.append(f'deny {cidr} any')
-        
+
         else:
             raise ValueError("Unsupported firewall type. Use 'iptables', 'ipfw', 'ipchains', 'pf', or 'ACL'.")
-    
+ 
     return rules
 
+"""
+Main function
+"""
 def main():
     parser = argparse.ArgumentParser(description='Generate firewall rules from CIDR list.')
     parser.add_argument('input_file', help='File containing CIDR addresses, one per line.')
@@ -58,7 +64,7 @@ def main():
     try:
         with open(args.input_file, 'r') as file:
             cidr_list = [line.strip() for line in file if line.strip()]
-        
+ 
         rules = generate_rules(cidr_list, args.action, args.firewall)
 
         if args.output:
@@ -77,7 +83,9 @@ def main():
         print(f"Error: {e}")
         sys.exit(1)
 
-# entrypoint
+"""
+entrypoint
+"""
 if __name__ == "__main__":
     main()
 
